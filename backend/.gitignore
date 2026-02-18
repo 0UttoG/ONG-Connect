@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+# Ocultar credenciales de base de datos
+application-secret.properties
