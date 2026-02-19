@@ -1,12 +1,12 @@
 package com.ongconnet.ongconnect.controllers;
 
-import com.ongconnet.ongconnect.entities.Donacion;
-import com.ongconnet.ongconnect.repositories.DonacionRepository;
+import com.ongconnet.ongconnect.services.DonacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/donaciones")
@@ -14,33 +14,33 @@ import java.util.List;
 public class DonacionController {
 
     @Autowired
-    private DonacionRepository donacionRepository;
+    private DonacionService donacionService;
 
-    // GET: Ver historial de donaciones
-    @GetMapping
-    public List<Donacion> listarDonaciones() {
-        return donacionRepository.findAll();
-    }
-
-    // POST: Crear donación usando tu regla de negocio en SQL
-    @PostMapping
-    public ResponseEntity<String> registrarDonacion(@RequestBody Donacion donacion) {
+    @PostMapping("/registrar")
+    public ResponseEntity<?> registrarDonacion(@RequestBody Map<String, Object> payload) {
         try {
-            // Llamamos a tu procedimiento en lugar del .save() normal
-            donacionRepository.registrarDonacionValidada(
-                    donacion.getIdSede(),
-                    donacion.getIdDonante(),
-                    donacion.getIdTipoDonacion(),
-                    donacion.getIdProyecto(),
-                    donacion.getCantidad(),
-                    donacion.getDescripcion(),
-                    donacion.getEstadoComprobante()
+            Integer idSede = (Integer) payload.get("idSede");
+            Integer idDonante = (Integer) payload.get("idDonante");
+            Integer idTipo = (Integer) payload.get("idTipo");
+            Integer idProyecto = (Integer) payload.get("idProyecto");
+
+            // Recibimos la cantidad como String desde el JSON y la convertimos seguro a BigDecimal
+            BigDecimal cantidad = new BigDecimal(payload.get("cantidad").toString());
+
+            String descripcion = (String) payload.get("descripcion");
+            Boolean estadoComprobante = (Boolean) payload.get("estadoComprobante");
+
+            // Llamamos a toda la lógica de validación, PDF y correo
+            String resultado = donacionService.procesarDonacion(
+                    idSede, idDonante, idTipo, idProyecto, cantidad, descripcion, estadoComprobante
             );
-            return ResponseEntity.ok("Donación registrada exitosamente y validada por la base de datos.");
+
+            return ResponseEntity.ok().body(Map.of("mensaje", resultado));
 
         } catch (Exception e) {
-            // Si tu procedimiento hace un RAISE EXCEPTION, lo capturamos aquí
-            return ResponseEntity.badRequest().body("Error al registrar donación: " + e.getMessage());
+            // Si tu función SQL lanza el error (ej: la donación excede el límite del 1.5 de la meta),
+            // el error se captura aquí y Postman muestra un Bad Request
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
 }
