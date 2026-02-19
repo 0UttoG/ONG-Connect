@@ -18,6 +18,12 @@ public class Donante {
     private String correo;
     private String telefono;
 
+    // AHORA ESTO YA NO TE MARCARÁ ERROR:
+    @OneToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
+
+
     @Column(name = "fecha_registro", insertable = false, updatable = false)
     private LocalDateTime fechaRegistro;
 }
