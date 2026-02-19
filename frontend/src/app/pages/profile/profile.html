@@ -1,0 +1,61 @@
+<app-navbar></app-navbar>
+
+<div class="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
+    
+    <div class="max-w-5xl mx-auto">
+        
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8 flex flex-col md:flex-row items-center gap-6">
+            <img [src]="usuario.foto" class="w-24 h-24 rounded-full object-cover border-4 border-teal-50 shadow-md">
+            <div class="text-center md:text-left">
+                <h1 class="text-2xl font-bold text-gray-800">{{ usuario.nombre }}</h1>
+                <p class="text-gray-500">{{ usuario.correo }}</p>
+                <span class="inline-block mt-2 px-3 py-1 bg-teal-100 text-teal-700 text-xs font-bold rounded-full">
+                    Donante Activo
+                </span>
+            </div>
+            <div class="md:ml-auto bg-teal-50 p-4 rounded-xl text-center min-w-[150px]">
+                <p class="text-sm text-gray-500 uppercase font-bold">Total Donado</p>
+                <p class="text-3xl font-bold text-teal-600">${{ totalDonado }}</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-8 py-6 border-b border-gray-100">
+                <h2 class="text-xl font-bold text-gray-800">Historial de Impacto</h2>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
+                        <tr>
+                            <th class="px-8 py-4 font-bold">ID</th>
+                            <th class="px-8 py-4 font-bold">Fecha</th>
+                            <th class="px-8 py-4 font-bold">Proyecto</th>
+                            <th class="px-8 py-4 font-bold">Monto</th>
+                            <th class="px-8 py-4 font-bold">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr *ngFor="let donacion of donaciones" class="hover:bg-slate-50 transition-colors">
+                            <td class="px-8 py-4 text-gray-500 font-mono">{{ donacion.id }}</td>
+                            <td class="px-8 py-4 text-gray-800">{{ donacion.fecha }}</td>
+                            <td class="px-8 py-4 text-gray-800 font-medium">{{ donacion.proyecto }}</td>
+                            <td class="px-8 py-4 text-teal-600 font-bold">${{ donacion.monto }}</td>
+                            <td class="px-8 py-4">
+                                <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-md">
+                                    {{ donacion.estado }}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div *ngIf="donaciones.length === 0" class="p-12 text-center text-gray-500">
+                <p>Aún no has realizado donaciones.</p>
+                <a routerLink="/donar" class="text-teal-600 font-bold hover:underline mt-2 inline-block">¡Haz tu primera donación!</a>
+            </div>
+        </div>
+
+    </div>
+</div>

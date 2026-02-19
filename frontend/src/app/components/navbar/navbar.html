@@ -1,29 +1,37 @@
-<nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between h-16">
-      
-      <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
-        <div class="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center shadow-md hover:bg-teal-700 transition">
-            <span class="text-white font-bold text-lg">♥</span>
+<nav class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            
+            <div class="flex items-center cursor-pointer" routerLink="/">
+                <div class="bg-teal-600 text-white p-1.5 rounded-lg mr-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                </div>
+                <span class="font-bold text-xl text-gray-800 tracking-tight">ONG-Connect</span>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-8">
+                <a routerLink="/" 
+                   routerLinkActive="text-teal-600 border-b-2 border-teal-600" 
+                   [routerLinkActiveOptions]="{exact: true}"
+                   class="text-gray-500 hover:text-teal-600 font-bold px-1 py-4 transition-colors text-sm uppercase tracking-wide cursor-pointer">
+                    Proyectos
+                </a>
+                
+                <a routerLink="/nosotros" 
+                   routerLinkActive="text-teal-600 border-b-2 border-teal-600"
+                   class="text-gray-500 hover:text-teal-600 font-medium px-1 py-4 transition-colors text-sm cursor-pointer">
+                    Nosotros
+                </a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <a routerLink="/perfil" 
+                   routerLinkActive="bg-teal-50 text-teal-700 ring-2 ring-teal-500"
+                   class="flex items-center px-4 py-2 rounded-full text-gray-600 hover:bg-gray-50 hover:text-teal-600 font-medium text-sm transition-all border border-gray-200 cursor-pointer">
+                    <span>Mi Perfil</span>
+                </a>
+
+                </div>
         </div>
-        <span class="font-bold text-xl text-gray-800 tracking-tight hover:text-teal-600 transition">ONG-Connect</span>
-      </div>
-
-      <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-8">
-        <a href="#" class="text-teal-600 font-bold border-b-2 border-teal-600 px-1 pt-1 text-sm uppercase tracking-wide">
-            Proyectos
-        </a>
-<a routerLink="/nosotros" 
-   routerLinkActive="text-teal-600 font-bold bg-teal-50 rounded-lg" 
-   [routerLinkActiveOptions]="{exact: true}"
-   class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer">
-    Nosotros
-</a>
-        <button class="bg-teal-50 text-teal-700 border border-teal-100 px-4 py-2 rounded-full font-medium hover:bg-teal-600 hover:text-white transition-all shadow-sm text-sm">
-            Mi Perfil
-        </button>
-      </div>
-
     </div>
-  </div>
 </nav>
