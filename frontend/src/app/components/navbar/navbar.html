@@ -13,9 +13,12 @@
         <a href="#" class="text-teal-600 font-bold border-b-2 border-teal-600 px-1 pt-1 text-sm uppercase tracking-wide">
             Proyectos
         </a>
-        <a href="#" class="text-gray-500 hover:text-teal-600 hover:bg-gray-50 px-3 py-2 rounded-md font-medium transition-all text-sm">
-            Nosotros
-        </a>
+<a routerLink="/nosotros" 
+   routerLinkActive="text-teal-600 font-bold bg-teal-50 rounded-lg" 
+   [routerLinkActiveOptions]="{exact: true}"
+   class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer">
+    Nosotros
+</a>
         <button class="bg-teal-50 text-teal-700 border border-teal-100 px-4 py-2 rounded-full font-medium hover:bg-teal-600 hover:text-white transition-all shadow-sm text-sm">
             Mi Perfil
         </button>
