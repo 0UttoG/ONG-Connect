@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/proyectos")
@@ -54,5 +55,51 @@ public class ProyectoController {
     public String cambiarEstado(@PathVariable Integer id, @RequestParam String nuevoEstado) {
         proyectoRepository.actualizarEstadoProyecto(id, nuevoEstado);
         return "El estado del proyecto " + id + " ha sido actualizado a: " + nuevoEstado;
+    }
+
+    // =================================================================
+    // SECCIÓN 3: DETALLES COMPLETOS (CÁLCULOS MATEMÁTICOS)
+    // =================================================================
+
+    @GetMapping("/{id}/detalles")
+    public ResponseEntity<Map<String, Object>> obtenerDetallesCompletos(@PathVariable Integer id) {
+        // 1. Buscamos los datos base del proyecto (fechas y descripción)
+        Proyecto proyecto = proyectoRepository.findById(id).orElse(null);
+        if (proyecto == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // 2. Buscamos la vista para obtener el progreso financiero
+        VistaProyectoFrontend vista = proyectoService.obtenerTarjetasProyectos().stream()
+                .filter(v -> v.getIdProyecto().equals(id))
+                .findFirst()
+                .orElse(null);
+
+        // 3. Lógica para calcular Días Restantes
+        long diasRestantes = 0;
+        if (proyecto.getFechaLimite() != null) {
+            diasRestantes = java.time.temporal.ChronoUnit.DAYS.between(java.time.LocalDate.now(), proyecto.getFechaLimite());
+            if (diasRestantes < 0) diasRestantes = 0; // Si el proyecto ya expiró
+        }
+
+        // 4. Lógica para Donantes (Temporalmente simulado hasta que uses DonacionRepository)
+        // Aquí deberías inyectar DonacionRepository y hacer algo como: donacionRepository.countByIdProyecto(id);
+        long cantidadDonantes = 15; // Reemplazar con count real de BD
+
+        // 5. Construir el paquete de datos perfecto para Angular
+        Map<String, Object> respuesta = new java.util.HashMap<>();
+        respuesta.put("id", proyecto.getIdProyectos());
+        respuesta.put("titulo", vista != null ? vista.getTitulo() : proyecto.getNombreProyecto());
+        respuesta.put("categoria", vista != null ? vista.getCategoria() : "General");
+        respuesta.put("imagen", vista != null ? vista.getImagenUrl() : proyecto.getTipoImagen());
+        respuesta.put("metaMonto", vista != null ? vista.getMeta() : proyecto.getMetaFinanciera());
+        respuesta.put("montoRecaudado", vista != null ? vista.getRecaudado() : 0);
+
+        // Datos nuevos:
+        respuesta.put("descripcionLarga", proyecto.getDescripcion());
+        respuesta.put("diasRestantes", diasRestantes);
+        respuesta.put("donantes", cantidadDonantes);
+
+        return ResponseEntity.ok(respuesta);
     }
 }
