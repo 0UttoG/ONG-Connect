@@ -6,7 +6,8 @@ import { About } from './pages/about/about';
 import { Login } from './pages/login/login';
 import { Profile } from './pages/profile/profile';
 import { ProjectDetails } from './pages/project-details/project-details';
-import { AdminDashboard } from './pages/admin-dashboard/admin-dashboard'; // <--- 1. Importar
+import { AdminDashboard } from './pages/admin-dashboard/admin-dashboard';
+import { AdminProyectos } from './pages/admin-proyectos/admin-proyectos'; // <--- Importamos el nuevo
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -16,5 +17,6 @@ export const routes: Routes = [
     { path: 'login', component: Login },
     { path: 'perfil', component: Profile },
     { path: 'proyecto/:id', component: ProjectDetails },
-    { path: 'admin', component: AdminDashboard } // <--- 2. Nueva ruta
+    { path: 'admin', component: AdminDashboard },
+    { path: 'admin/proyectos', component: AdminProyectos } // <--- La nueva ruta lista
 ];
