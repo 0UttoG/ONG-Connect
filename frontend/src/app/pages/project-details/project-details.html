@@ -48,8 +48,7 @@
                     <p class="text-xs text-gray-500 uppercase font-bold">Días más</p>
                 </div>
             </div>
-
-            <button [routerLink]="['/donar']" [queryParams]="{ proyecto: proyecto.titulo }" class="w-full bg-teal-600 text-white font-bold text-lg py-4 rounded-xl shadow-md hover:bg-teal-700 hover:shadow-lg transition-all transform hover:-translate-y-1">
+<button [routerLink]="['/donar']" [queryParams]="{ idProyecto: proyecto.id }" class="w-full bg-teal-600 text-white font-bold text-lg py-4 rounded-xl shadow-md hover:bg-teal-700 hover:shadow-lg transition-all transform hover:-translate-y-1">
     DONAR AHORA ❤️
 </button>
             <p class="text-center text-xs text-gray-400 mt-4">Transacción 100% segura y encriptada.</p>

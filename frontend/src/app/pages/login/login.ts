@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Navbar } from '../../components/navbar/navbar';
-import { RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth.service'; // <-- Importar
+import { RouterLink, Router } from '@angular/router'; 
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -18,18 +18,22 @@ export class Login {
     password: ''
   };
 
-  constructor(private authService: AuthService) {} // <-- Inyectar
+  constructor(private authService: AuthService, private router: Router) {}
 
   iniciarSesion() {
     this.authService.login(this.credenciales).subscribe({
       next: (respuesta) => {
-        // El backend devuelve { idUsuario: X, idRol: Y, mensaje: "...", idDonante: Z }
-        alert(respuesta.mensaje); 
-        // Aquí podrías guardar el ID en localStorage y redirigir con Router
+        // Asegurarnos de que estamos en el navegador antes de guardar
+        if (typeof window !== 'undefined' && window.localStorage) {
+          localStorage.setItem('idDonante', respuesta.idDonante); 
+        }
+        
+        alert('¡Inicio de sesión exitoso!');
+        this.router.navigate(['/']); 
       },
       error: (err) => {
-        // Tu backend devuelve status 401 y { error: "..." }
-        alert(err.error.error || 'Ocurrió un error');
+        console.error('Error en el login', err);
+        alert(err.error?.error || 'Correo o contraseña incorrectos');
       }
     });
   }

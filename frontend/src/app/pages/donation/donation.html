@@ -16,9 +16,9 @@
                         <span class="bg-teal-100 text-teal-700 rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">1</span>
                         Selecciona tu Causa
                     </h2>
-                    <select [(ngModel)]="proyectoSeleccionado" name="proyecto" class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-gray-700 font-medium bg-gray-50 cursor-pointer outline-none transition-all hover:border-teal-400">
-                        <option *ngFor="let p of proyectosLista" [value]="p">{{ p }}</option>
-                    </select>
+                    <select [(ngModel)]="payloadDonacion.idProyecto" name="proyecto" class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-gray-700 font-medium bg-gray-50 cursor-pointer outline-none transition-all hover:border-teal-400">
+    <option *ngFor="let p of proyectosLista" [value]="p.idProyecto">{{ p.titulo }}</option>
+</select>
                 </div>
 
                 <div>
