@@ -18,23 +18,32 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/register`, usuario);
   }
 
-  // --- NUEVAS FUNCIONES PARA LA SESIÓN ---
+  // --- NUEVAS FUNCIONES PARA LA SESIÓN (CORREGIDAS) ---
 
   guardarSesion(datosUsuario: any) {
-    // Guarda los datos del usuario en la memoria del navegador
-    localStorage.setItem('usuarioONG', JSON.stringify(datosUsuario));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('usuarioONG', JSON.stringify(datosUsuario));
+    }
   }
 
   obtenerUsuarioLogueado() {
-    const usuario = localStorage.getItem('usuarioONG');
-    return usuario ? JSON.parse(usuario) : null;
+    if (typeof window !== 'undefined') {
+      const usuario = localStorage.getItem('usuarioONG');
+      return usuario ? JSON.parse(usuario) : null;
+    }
+    return null;
   }
 
   estaAutenticado(): boolean {
-    return localStorage.getItem('usuarioONG') !== null;
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('usuarioONG') !== null;
+    }
+    return false;
   }
 
   cerrarSesion() {
-    localStorage.removeItem('usuarioONG');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('usuarioONG');
+    }
   }
 }
