@@ -1,0 +1,25 @@
+[33mc342c11[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{0}: commit: Arreglo de etiquetas y resolucion de conflictos en dashboard
+[33m09a70d7[m HEAD@{1}: commit: version 1
+[33mce49b22[m HEAD@{2}: rebase (finish): returning to refs/heads/main
+[33mce49b22[m HEAD@{3}: rebase (pick): crud de proyectos
+[33m38eafdf[m HEAD@{4}: rebase (pick): areglo del frontend con datos de targetas, falta datos de las tablas
+[33m3b26383[m HEAD@{5}: rebase (continue): arreglo de datos para las targetas del fromtend
+[33mce14f36[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{6}: pull --rebase (start): checkout ce14f36898b72d32c34b101265c9a2866ce652be
+[33mfa7cbfb[m HEAD@{7}: commit: crud de proyectos
+[33m1cbfc43[m HEAD@{8}: pull --rebase (finish): returning to refs/heads/main
+[33m1cbfc43[m HEAD@{9}: pull --rebase (pick): areglo del frontend con datos de targetas, falta datos de las tablas
+[33m687269a[m HEAD@{10}: pull --rebase (pick): arreglo de datos para las targetas del fromtend
+[33m81143c6[m HEAD@{11}: pull --rebase (start): checkout 81143c675f3e7a394ea06bf5127e317d636ea8ca
+[33mf697389[m HEAD@{12}: commit: areglo del frontend con datos de targetas, falta datos de las tablas
+[33mf860f60[m HEAD@{13}: commit: arreglo de datos para las targetas del fromtend
+[33m7188f30[m HEAD@{14}: pull: Fast-forward
+[33m131f927[m HEAD@{15}: pull origin main (finish): returning to refs/heads/main
+[33m131f927[m HEAD@{16}: pull origin main (pick): cambios de frontend estables
+[33m06152ab[m HEAD@{17}: pull origin main (start): checkout 06152ab7d73157b5af4878b3ba55982bd17acb19
+[33m52cfdae[m HEAD@{18}: pull --rebase (finish): returning to refs/heads/main
+[33m52cfdae[m HEAD@{19}: pull --rebase (pick): cambios de frontend estables
+[33mc97d7e1[m HEAD@{20}: pull --rebase (start): checkout c97d7e109a2daae52c90e91d36dd16ecd665f578
+[33m9a2de82[m HEAD@{21}: commit: cambios de frontend estables
+[33m58badb3[m HEAD@{22}: pull --rebase (finish): returning to refs/heads/main
+[33m58badb3[m HEAD@{23}: pull --rebase (pick): primera coneccion con el frontned
+[33mff67a61[m HEAD@{24}: pull --rebase (start): checkout ff67a61f08ba4e1c30c3aff3aa09d40262e14979
