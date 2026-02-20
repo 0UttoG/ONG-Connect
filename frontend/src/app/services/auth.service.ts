@@ -6,18 +6,35 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  // La ruta base hacia tu AuthController en Spring Boot
   private apiUrl = 'http://localhost:8080/api/auth';
 
   constructor(private http: HttpClient) { }
 
-  // Llama al endpoint de registro
+  login(credenciales: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/login`, credenciales);
+  }
+
   registrar(usuario: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, usuario);
   }
 
-  // Llama al endpoint de login
-  login(credenciales: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, credenciales);
+  // --- NUEVAS FUNCIONES PARA LA SESIÓN ---
+
+  guardarSesion(datosUsuario: any) {
+    // Guarda los datos del usuario en la memoria del navegador
+    localStorage.setItem('usuarioONG', JSON.stringify(datosUsuario));
+  }
+
+  obtenerUsuarioLogueado() {
+    const usuario = localStorage.getItem('usuarioONG');
+    return usuario ? JSON.parse(usuario) : null;
+  }
+
+  estaAutenticado(): boolean {
+    return localStorage.getItem('usuarioONG') !== null;
+  }
+
+  cerrarSesion() {
+    localStorage.removeItem('usuarioONG');
   }
 }

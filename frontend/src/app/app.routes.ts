@@ -10,6 +10,7 @@ import { AdminDashboard } from './pages/admin-dashboard/admin-dashboard';
 import { AdminProyectos } from './pages/admin-proyectos/admin-proyectos'; 
 import { AdminSucursales } from './pages/admin-sucursales/admin-sucursales'; // <--- 1. Importado aquí
 import { AdminReportes } from './pages/admin-reportes/admin-reportes';
+import { AdminRiesgos } from './pages/admin-riesgos/admin-riesgos'; // <--- 1. Importa arriba
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -22,5 +23,7 @@ export const routes: Routes = [
     { path: 'admin', component: AdminDashboard },
     { path: 'admin/proyectos', component: AdminProyectos },
     { path: 'admin/sucursales', component: AdminSucursales },
-    { path: 'admin/reportes', component: AdminReportes }
+    { path: 'admin/reportes', component: AdminReportes },
+    { path: 'admin/riesgos', component: AdminRiesgos } // <--- 2. Agrega la ruta al final
+
 ];
