@@ -25,13 +25,19 @@
             </div>
 
             <div class="flex items-center space-x-4">
+                
+                <a routerLink="/login" 
+                   routerLinkActive="hidden"
+                   class="text-sm font-bold text-gray-500 hover:text-teal-600 transition-colors cursor-pointer">
+                    Iniciar Sesión
+                </a>
+
                 <a routerLink="/perfil" 
                    routerLinkActive="bg-teal-50 text-teal-700 ring-2 ring-teal-500"
                    class="flex items-center px-4 py-2 rounded-full text-gray-600 hover:bg-gray-50 hover:text-teal-600 font-medium text-sm transition-all border border-gray-200 cursor-pointer">
                     <span>Mi Perfil</span>
                 </a>
-
-                </div>
+            </div>
         </div>
     </div>
 </nav>

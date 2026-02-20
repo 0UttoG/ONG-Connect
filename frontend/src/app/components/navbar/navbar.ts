@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router'; // <--- 1. IMPORTAR ESTO
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive], // <--- 2. AGREGARLO AQUÍ
+  imports: [CommonModule, RouterLink, RouterLinkActive], // <-- Importamos las rutas
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })
