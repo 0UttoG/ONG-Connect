@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; // 1. Importar ChangeDetectorRef
 import { CommonModule } from '@angular/common';
 import { Navbar } from '../../components/navbar/navbar';
 import { ProjectCard } from '../../components/project-card/project-card';
@@ -14,16 +14,18 @@ import { ProyectoService } from '../../services/proyecto.service';
 export class Home implements OnInit {
   proyectos: any[] = [];
 
-  constructor(private proyectoService: ProyectoService) {}
+  // 2. Inyectar el ChangeDetectorRef en el constructor
+  constructor(
+    private proyectoService: ProyectoService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.cargarProyectos();
   }
 
   cargarProyectos(): void {
-    // 1. Corregido el nombre a obtenerTarjetas()
     this.proyectoService.obtenerTarjetas().subscribe({
-      // 2. Agregados los tipos : any[] y : any para que Angular no se queje
       next: (data: any[]) => {
         this.proyectos = data.map((p: any) => ({
           id: p.idProyecto,
@@ -33,6 +35,9 @@ export class Home implements OnInit {
           montoRecaudado: p.recaudado,
           imagen: p.imagenUrl || 'https://via.placeholder.com/300x200'
         }));
+        
+        // 3. ACTUALIZACIÓN FORZADA: Pinta la pantalla inmediatamente
+        this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('Error al obtener proyectos:', err);
