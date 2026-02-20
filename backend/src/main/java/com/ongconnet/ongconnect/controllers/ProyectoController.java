@@ -34,6 +34,7 @@ public class ProyectoController {
         return ResponseEntity.ok(tarjetas);
     }
 
+
     // =================================================================
     // SECCIÓN 2: GESTIÓN ADMINISTRATIVA (LO QUE YA TENÍAS)
     // =================================================================
@@ -42,6 +43,14 @@ public class ProyectoController {
     @GetMapping
     public List<Proyecto> listarProyectos() {
         return proyectoRepository.findAll();
+    }
+    // GET: Buscar un proyecto por ID para cargar el formulario de edición
+    // URL: GET http://localhost:8080/api/proyectos/{id}
+    @GetMapping("/{id}")
+    public ResponseEntity<Proyecto> obtenerProyectoPorId(@PathVariable Integer id) {
+        return proyectoRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     // POST: Crear un nuevo proyecto
@@ -55,6 +64,34 @@ public class ProyectoController {
     public String cambiarEstado(@PathVariable Integer id, @RequestParam String nuevoEstado) {
         proyectoRepository.actualizarEstadoProyecto(id, nuevoEstado);
         return "El estado del proyecto " + id + " ha sido actualizado a: " + nuevoEstado;
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Proyecto> actualizarProyectoCompleto(@PathVariable Integer id, @RequestBody Proyecto proyectoActualizado) {
+        return proyectoRepository.findById(id).map(proyecto -> {
+            // Campos básicos
+            proyecto.setNombreProyecto(proyectoActualizado.getNombreProyecto());
+            proyecto.setDescripcion(proyectoActualizado.getDescripcion());
+            proyecto.setMetaFinanciera(proyectoActualizado.getMetaFinanciera());
+            proyecto.setEstado(proyectoActualizado.getEstado());
+
+            // NUEVOS CAMPOS (Obligatorios según tu Script SQL)
+            proyecto.setFechaInicio(proyectoActualizado.getFechaInicio());
+            proyecto.setFechaLimite(proyectoActualizado.getFechaLimite());
+            proyecto.setFechaLogroMeta(proyectoActualizado.getFechaLogroMeta());
+            proyecto.setPrioridadRiesgo(proyectoActualizado.getPrioridadRiesgo());
+
+            // Relaciones
+            if(proyectoActualizado.getIdSede() != null) proyecto.setIdSede(proyectoActualizado.getIdSede());
+            if(proyectoActualizado.getIdTipoProyecto() != null) proyecto.setIdTipoProyecto(proyectoActualizado.getIdTipoProyecto());
+
+            return ResponseEntity.ok(proyectoRepository.save(proyecto));
+        }).orElse(ResponseEntity.notFound().build());
+    }
+    // DELETE: Eliminar un proyecto de la base de datos
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminarProyectoFisico(@PathVariable Integer id) {
+        proyectoRepository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 
     // =================================================================

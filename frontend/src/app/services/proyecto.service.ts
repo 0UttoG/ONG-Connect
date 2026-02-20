@@ -21,4 +21,23 @@ export class ProyectoService {
   obtenerDetallesProyecto(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}/detalles`);
   }
+
+  // POST: Crear nuevo proyecto
+  crearProyecto(proyecto: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}`, proyecto);
   }
+
+  // PUT: Actualizar proyecto existente
+  actualizarProyecto(id: number, proyecto: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, proyecto);
+  }
+
+  // DELETE: Eliminar proyecto
+  eliminarProyecto(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+  obtenerProyectoPorId(id: number): Observable<any> {
+  return this.http.get(`${this.apiUrl}/${id}`);
+}
+  }
+  

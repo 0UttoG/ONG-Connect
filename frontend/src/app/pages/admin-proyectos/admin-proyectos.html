@@ -64,7 +64,7 @@
                 <thead>
                     <tr class="bg-gray-50 border-b border-gray-100 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                         <th class="p-4">Nombre Proyecto</th>
-                        <th class="p-4">Sucursal Asignada</th>
+                        <th class="p-4">Categoría</th>
                         <th class="p-4">Meta</th>
                         <th class="p-4">Recaudado</th>
                         <th class="p-4">Estado</th>
@@ -73,19 +73,19 @@
                 </thead>
                 <tbody class="text-sm text-gray-700">
                     <tr *ngFor="let p of proyectos" class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                        <td class="p-4 font-medium text-gray-900">{{ p.nombre }}</td>
-                        <td class="p-4">{{ p.sucursal }}</td>
-                        <td class="p-4">${{ p.meta | number }}</td>
+                        <td class="p-4 font-medium text-gray-900">{{ p.titulo || p.nombre_proyecto }}</td>
+                        <td class="p-4">{{ p.categoria || 'General' }}</td>
+                        <td class="p-4">${{ (p.meta || p.meta_financiera) | number }}</td>
                         <td class="p-4 text-teal-600 font-medium">${{ p.recaudado | number }}</td>
                         <td class="p-4">
-                            <span *ngIf="p.estado === 'activo'" class="bg-teal-600 text-white text-xs font-bold px-3 py-1 rounded-full">activo</span>
+                            <span *ngIf="p.estado === 'activo' || !p.estado" class="bg-teal-600 text-white text-xs font-bold px-3 py-1 rounded-full">activo</span>
                             <span *ngIf="p.estado === 'completado'" class="bg-gray-100 text-gray-600 text-xs font-bold px-3 py-1 rounded-full border border-gray-200">completado</span>
                         </td>
                         <td class="p-4 flex justify-center space-x-3">
                             <button (click)="abrirModalEditar(p)" class="text-gray-400 hover:text-teal-600 transition-colors">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                             </button>
-                            <button class="text-gray-400 hover:text-red-500 transition-colors">
+                            <button (click)="eliminarProyecto(p.id_proyecto || p.idProyecto || p.id)" class="text-gray-400 hover:text-red-500 transition-colors">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                             </button>
                         </td>
@@ -94,7 +94,7 @@
             </table>
         </div>
 
-        <div *ngIf="mostrarModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 backdrop-blur-sm">
+        <div *ngIf="modalAbierto" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 backdrop-blur-sm">
             <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden animate-fade-in-up">
                 
                 <div class="flex justify-between items-center p-6 border-b border-gray-100">
@@ -115,27 +115,7 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
-                        <textarea [(ngModel)]="proyectoForm.descripcion" rows="3" class="w-full border border-gray-200 bg-gray-50 rounded-lg p-2.5 focus:bg-white focus:border-teal-500 outline-none text-sm resize-none"></textarea>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-5">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
-                            <select [(ngModel)]="proyectoForm.categoria" class="w-full border border-gray-200 rounded-lg p-2.5 text-sm outline-none focus:border-teal-500">
-                                <option value="">Seleccionar</option>
-                                <option value="Educación">Educación</option>
-                                <option value="Salud">Salud</option>
-                                <option value="Medioambiente">Medioambiente</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Asignar Sucursal</label>
-                            <select [(ngModel)]="proyectoForm.sucursal" class="w-full border border-gray-200 rounded-lg p-2.5 text-sm outline-none focus:border-teal-500">
-                                <option value="">Seleccionar</option>
-                                <option value="Sede Central">Sede Central</option>
-                                <option value="Sede Norte">Sede Norte</option>
-                            </select>
-                        </div>
+                        <textarea [(ngModel)]="proyectoForm.descripcion" rows="2" class="w-full border border-gray-200 bg-gray-50 rounded-lg p-2.5 focus:bg-white focus:border-teal-500 outline-none text-sm resize-none"></textarea>
                     </div>
 
                     <div class="grid grid-cols-2 gap-5">
@@ -144,10 +124,54 @@
                             <input type="number" [(ngModel)]="proyectoForm.meta" class="w-full border border-gray-200 bg-gray-50 rounded-lg p-2.5 text-sm outline-none focus:bg-white focus:border-teal-500">
                         </div>
                         <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Asignar Sucursal</label>
+                            <select [(ngModel)]="proyectoForm.idSede" class="w-full border border-gray-200 rounded-lg p-2.5 text-sm outline-none focus:border-teal-500">
+                                <option [ngValue]="null" disabled>Seleccionar Sucursal</option>
+                                <option *ngFor="let sede of sedesLista" [value]="sede.idSede">{{ sede.nombreSede }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de Inicio</label>
+                            <input type="date" [(ngModel)]="proyectoForm.fechaInicio" class="w-full border border-gray-200 bg-gray-50 rounded-lg p-2.5 text-sm outline-none focus:bg-white focus:border-teal-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Límite</label>
+                            <input type="date" [(ngModel)]="proyectoForm.fechaLimite" class="w-full border border-gray-200 bg-gray-50 rounded-lg p-2.5 text-sm outline-none focus:bg-white focus:border-teal-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Logro de Meta (Estimado)</label>
+                            <input type="date" [(ngModel)]="proyectoForm.fechaLogroMeta" class="w-full border border-gray-200 bg-gray-50 rounded-lg p-2.5 text-sm outline-none focus:bg-white focus:border-teal-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Prioridad de Riesgo</label>
+                            <select [(ngModel)]="proyectoForm.prioridadRiesgo" class="w-full border border-gray-200 rounded-lg p-2.5 text-sm outline-none focus:border-teal-500">
+                                <option [value]="1">Baja (1)</option>
+                                <option [value]="2">Media (2)</option>
+                                <option [value]="3">Alta (3)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-5">
+                        <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
                             <select [(ngModel)]="proyectoForm.estado" class="w-full border border-gray-200 rounded-lg p-2.5 text-sm outline-none focus:border-teal-500">
                                 <option value="activo">Activo</option>
                                 <option value="completado">Completado</option>
+                                <option value="pausado">Pausado</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Categoría (Tipo de Proyecto)</label>
+                            <select [(ngModel)]="proyectoForm.idTipoProyecto" class="w-full border border-gray-200 rounded-lg p-2.5 text-sm outline-none focus:border-teal-500">
+                                <option [ngValue]="null" disabled>Seleccionar Categoría</option>
+                                <option *ngFor="let tipo of tiposLista" [value]="tipo.idTipoProyecto">{{ tipo.nombreTipo }}</option>
                             </select>
                         </div>
                     </div>
