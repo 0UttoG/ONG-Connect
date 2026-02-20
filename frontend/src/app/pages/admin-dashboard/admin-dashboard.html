@@ -52,6 +52,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             
+<<<<<<< HEAD
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col">
                 <div class="flex justify-between items-start">
                     <div class="bg-teal-50 text-teal-600 p-2.5 rounded-xl">
@@ -94,6 +95,59 @@
                 </div>
                 <p class="text-gray-500 text-sm font-medium mt-6">Donaciones de Hoy</p>
                 <h3 class="text-3xl font-bold text-gray-800 mt-1">{{ kpis.donacionesHoy }}</h3>
+=======
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-white text-gray-500 text-xs uppercase">
+                        <tr>
+                            <th class="px-6 py-4 font-bold">ID Transacción</th>
+                            <th class="px-6 py-4 font-bold">Donante</th>
+                            <th class="px-6 py-4 font-bold">Proyecto Destino</th>
+                            <th class="px-6 py-4 font-bold">Monto</th>
+                            <th class="px-6 py-4 font-bold">Fecha</th>
+                            <th class="px-6 py-4 font-bold">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+    <tr *ngFor="let donation of recentDonations" class="hover:bg-gray-50 transition-colors">
+        
+        <td class="px-6 py-4 whitespace-nowrap">
+            <div class="flex items-center">
+                <div class="h-8 w-8 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 font-bold mr-3">
+                    {{ donation.nombreDonante ? donation.nombreDonante.charAt(0) : 'D' }}
+                </div>
+                <div>
+                    <div class="text-sm font-medium text-gray-900">{{ donation.nombreDonante }}</div>
+                    <div class="text-sm text-gray-500">TRX-{{ donation.idDonacion }}</div>
+                </div>
+            </div>
+        </td>
+
+        <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-gray-900">{{ donation.nombreProyecto }}</div>
+        </td>
+
+        <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm font-medium text-gray-900">${{ donation.cantidad }}</div>
+        </td>
+
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {{ donation.fechaDonacion | slice:0:10 }}
+        </td>
+
+        <td class="px-6 py-4 whitespace-nowrap">
+            <span *ngIf="donation.estadoRecibo" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                Emitido
+            </span>
+            <span *ngIf="!donation.estadoRecibo" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                Pendiente
+            </span>
+        </td>
+
+    </tr>
+</tbody>
+                </table>
+>>>>>>> 687269a (arreglo de datos para las targetas del fromtend)
             </div>
         </div>
 

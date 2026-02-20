@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, ChangeDetectorRef, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AdminService } from '../../services/admin.service';
 
@@ -12,7 +12,6 @@ import { AdminService } from '../../services/admin.service';
 })
 export class AdminDashboard implements OnInit {
   
-  // Variables que se llenarán con los datos reales de Java
   kpis = {
     totalRecaudado: 0,
     donantesActivos: 0,
@@ -20,15 +19,19 @@ export class AdminDashboard implements OnInit {
     donacionesHoy: 0
   };
 
-  donacionesRecientes: any[] = [];
+  // ¡CORRECCIÓN AQUÍ! El nombre vuelve a ser recentDonations para coincidir con el HTML
+  recentDonations: any[] = [];
 
   constructor(
     private adminService: AdminService,
-    private cdr: ChangeDetectorRef // El Despertador para evitar los 2 clics
+    private cdr: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
-    this.cargarDatosReales();
+    if (isPlatformBrowser(this.platformId)) {
+      this.cargarDatosReales();
+    }
   }
 
   cargarDatosReales() {
@@ -41,23 +44,21 @@ export class AdminDashboard implements OnInit {
         this.kpis.donacionesHoy = data.donacionesHoy || 0;
         this.cdr.detectChanges();
       },
-      error: (err) => console.log("Aún cargando endpoints de estadísticas...")
+      error: (err) => {
+        console.error("❌ Error real en estadísticas:", err);
+      }
     });
 
     // 2. CARGAR TABLA DE DONACIONES RECIENTES
     this.adminService.getDonacionesRecientes().subscribe({
       next: (data: any[]) => {
-        this.donacionesRecientes = data.map((d: any) => ({
-          id: 'TRX-' + d.idDonacion, 
-          donante: d.nombreDonante || 'Anónimo', 
-          proyecto: d.nombreProyecto || 'Fondo General', 
-          monto: d.cantidad,         
-          fecha: d.fechaDonacion,    
-          estado: 'Completado'       
-        }));
+        // Asignamos directamente la respuesta del backend
+        this.recentDonations = data;
         this.cdr.detectChanges();
       },
-      error: (err) => console.log("Aún cargando endpoint de donaciones...")
+      error: (err) => {
+        console.error("❌ Error real en la tabla de donaciones:", err);
+      }
     });
   }
 }
